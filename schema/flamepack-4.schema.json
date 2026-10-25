@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/pcdv/flamepack/schema/flamepack-4.schema.json",
+  "title": "Flamepack, version 4",
+  "description": "The shape of a Flamepack document. The rules a schema cannot state (front coding, depths, equal column lengths, indexes in range, sorted samples) are in SPEC.md, and tools/validate.mjs checks them.",
+  "type": "object",
+  "required": ["version", "unit", "weights", "start", "end", "strings", "stacks", "samples", "threads", "operations"],
+  "properties": {
+    "version": {"const": 4},
+    "unit": {"enum": ["ms", "bytes"]},
+    "weights": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+    "start": {"type": "string", "description": "ISO-8601 instant, or \"\" when the profile has no wall-clock time"},
+    "end": {"type": "number", "description": "ns since start, 0 when unknown"},
+    "strings": {
+      "type": "array",
+      "description": "front-coded: the first character's code point minus 32 is the length of the prefix shared with the previous string",
+      "items": {"type": "string", "pattern": "^[\\u0020-\\u007f]"}
+    },
+    "stacks": {
+      "type": "array",
+      "description": "pairs depth, frame, depth first; frame = string << 3 | type",
+      "items": {"type": "integer", "minimum": 0, "maximum": 2147483647}
+    },
+    "samples": {
+      "type": "object",
+      "required": ["time", "stack", "thread", "operation", "kind"],
+      "properties": {
+        "time": {"$ref": "#/$defs/numbers", "description": "ms, each the difference with the previous sample's"},
+        "stack": {"$ref": "#/$defs/indexes"},
+        "thread": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "operation": {"$ref": "#/$defs/indexes"},
+        "kind": {"$ref": "#/$defs/flags"},
+        "weight": {"$ref": "#/$defs/numbers"},
+        "objects": {"$ref": "#/$defs/numbers"}
+      }
+    },
+    "threads": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [{"type": "integer", "minimum": 0}, {"type": "integer"}],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "operations": {
+      "type": "object",
+      "required": ["name", "start", "duration", "thread", "detail", "status", "failed", "error", "async", "bytesIn",
+                   "bytesOut"],
+      "properties": {
+        "name": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "start": {"$ref": "#/$defs/numbers", "description": "ns, each the difference with the previous operation's"},
+        "duration": {"type": "array", "items": {"type": "number", "minimum": 0}},
+        "thread": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "detail": {"$ref": "#/$defs/indexes"},
+        "status": {"type": "array", "items": {"type": "integer"}},
+        "failed": {"$ref": "#/$defs/flags"},
+        "error": {"$ref": "#/$defs/indexes"},
+        "async": {"$ref": "#/$defs/flags"},
+        "bytesIn": {"$ref": "#/$defs/numbers"},
+        "bytesOut": {"$ref": "#/$defs/numbers"}
+      }
+    }
+  },
+  "$defs": {
+    "numbers": {"type": "array", "items": {"type": "number"}},
+    "indexes": {"type": "array", "items": {"type": "integer", "minimum": -1}},
+    "flags": {"type": "array", "items": {"enum": [0, 1]}}
+  }
+}

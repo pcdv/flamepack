@@ -1,0 +1,10 @@
+{
+  "name": "flamepack",
+  "private": true,
+  "description": "A JSON format for stack samples, to draw flame graphs from",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "test": "node tools/validate.mjs examples/minimal.flamepack.json examples/server.flamepack.json examples/heap.flamepack.json"
+  }
+}
