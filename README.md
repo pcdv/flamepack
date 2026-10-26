@@ -15,7 +15,7 @@ main 3                      "stacks": {"depth": [0, 1, 1], "name": [0, 1, 2]},
 Files end in `.flamepack.json`, or `.flamepack.json.gz` when gzipped.
 
 - [SPEC.md](SPEC.md): the format, version 5 (draft). [SPEC-4.md](SPEC-4.md): version 4, which
-  the tools below write today.
+  jfr-web's server still writes, and every tool below reads.
 - [schema/](schema/): the shape of each version, as a JSON Schema.
 - [examples/](examples/): a minimal profile, a server's with operations, a heap's; the same in
   version 4 under [examples/v4/](examples/v4/).
@@ -28,9 +28,11 @@ Files end in `.flamepack.json`, or `.flamepack.json.gz` when gzipped.
 ## Who reads and writes it
 
 - [jfr-web](https://github.com/pcdv/jfr-web), where the format comes from, writes it from JFR
-  recordings (time and allocation samples) and draws it.
-- [jheap](https://github.com/pcdv/jheap) writes the paths of a JVM heap dump as one.
-- [mountain-graph](https://github.com/pcdv/mountain-graph) draws any of them as a landscape.
+  recordings (time and allocation samples), as version 4, and draws versions 4 and 5.
+- [jheap](https://github.com/pcdv/jheap) writes the paths of a JVM heap dump as one, version 5,
+  and reads both.
+- [mountain-graph](https://github.com/pcdv/mountain-graph) draws any of them as a landscape, and
+  writes the heaps it exports, and the reduced ones, as version 5.
 
 Nothing in the format is specific to Java: a profiler for another language, or a converter
 from collapsed stacks, can write it and have it drawn by these tools. See "A minimal document"

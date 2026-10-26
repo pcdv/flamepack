@@ -1,9 +1,10 @@
 # Flamepack, version 5
 
-Status: draft. No producer writes version 5 yet; [tools/upgrade.mjs](tools/upgrade.mjs)
-converts a version 4 document to it. [Version 4](SPEC-4.md) is what jfr-web, jheap and
-mountain-graph write and read today; [Differences from version 4](#differences-from-version-4)
-lists what a reader of both must know.
+Status: draft. jheap and mountain-graph write it for a heap, and jfr-web, jheap and
+mountain-graph read it; jfr-web's server still writes [version 4](SPEC-4.md), which they
+read too. [tools/upgrade.mjs](tools/upgrade.mjs) converts a version 4 document to version 5;
+[Differences from version 4](#differences-from-version-4) lists what a reader of both must
+know.
 
 Flamepack is a JSON document holding the stack samples of a profile, from which a
 viewer draws flame graphs, timelines and tables. It is close to the collapsed stacks
