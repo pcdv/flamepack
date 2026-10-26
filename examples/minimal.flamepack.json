@@ -1,11 +1,4 @@
-{"version": 4,
- "unit": "ms",
- "weights": [10, 10],
- "start": "2026-10-25T09:00:00Z", "end": 50000000,
- "strings": [" MainThread", " compute", " main", " parse_body", "&header", " read_file"],
- "stacks": [0, 16, 1, 40, 1, 32, 1, 24, 2, 8],
- "samples": {"time": [0, 10, 10, 10, 10], "stack": [1, 2, 3, 4, 4],
-             "thread": [0, 0, 0, 0, 0], "operation": [-1, -1, -1, -1, -1], "kind": [0, 0, 0, 0, 0]},
- "threads": [[0, 1]],
- "operations": {"name": [], "start": [], "duration": [], "thread": [], "detail": [], "status": [],
-                "failed": [], "error": [], "async": [], "bytesIn": [], "bytesOut": []}}
+{"version": 5, "unit": "count",
+ "strings": [" main", " parse", " read"],
+ "stacks": {"depth": [0, 1, 1], "name": [0, 1, 2]},
+ "samples": {"stack": [1, 1, 1], "weight": [3, 12, 5]}}

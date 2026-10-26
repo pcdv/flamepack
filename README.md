@@ -3,22 +3,27 @@
 A JSON format for stack samples, to draw flame graphs from: the collapsed stacks of
 [FlameGraph](https://github.com/brendangregg/FlameGraph), packed with a string
 dictionary and a shared stack tree, and enriched with each sample's time, thread and
-operation, frame types and per-sample metrics.
+operation, frame types and per-sample metrics. Everything but the stacks is optional.
 
 ```
-main;parse_body;compute 20          →   {"version": 4, "unit": "ms",
-main;read_file 10                        "strings": [" MainThread", " compute", " main", ...],
-                                         "stacks": [0, 16, 1, 40, ...],
-                                         "samples": {"time": [...], "stack": [...], ...}, ...}
+main;parse 12          →   {"version": 5, "unit": "count",
+main;read 5                 "strings": [" main", " parse", " read"],
+main 3                      "stacks": {"depth": [0, 1, 1], "name": [0, 1, 2]},
+                            "samples": {"stack": [1, 1, 1], "weight": [3, 12, 5]}}
 ```
 
 Files end in `.flamepack.json`, or `.flamepack.json.gz` when gzipped.
 
-- [SPEC.md](SPEC.md): the format, version 4.
-- [schema/flamepack-4.schema.json](schema/flamepack-4.schema.json): its shape, as a JSON Schema.
-- [examples/](examples/): a minimal profile, a server's with operations, a heap's.
-- [tools/validate.mjs](tools/validate.mjs): checks documents against the spec, with no
-  dependency: `node tools/validate.mjs [--collapsed] <file>...`. `npm test` checks the examples.
+- [SPEC.md](SPEC.md): the format, version 5 (draft). [SPEC-4.md](SPEC-4.md): version 4, which
+  the tools below write today.
+- [schema/](schema/): the shape of each version, as a JSON Schema.
+- [examples/](examples/): a minimal profile, a server's with operations, a heap's; the same in
+  version 4 under [examples/v4/](examples/v4/).
+- [tools/validate.mjs](tools/validate.mjs): checks documents of either version against the
+  spec, with no dependency: `node tools/validate.mjs [--collapsed] <file>...`.
+- [tools/upgrade.mjs](tools/upgrade.mjs): converts a version 4 document to version 5:
+  `node tools/upgrade.mjs <in> <out>`.
+- `npm test` checks the examples, and that converting them changes nothing they draw.
 
 ## Who reads and writes it
 

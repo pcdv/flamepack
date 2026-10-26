@@ -1,0 +1,12 @@
+{"version": 4,
+ "unit": "bytes",
+ "weights": [1, 1],
+ "start": "", "end": 0,
+ "strings": [" System Class", " all", " byte[]", " com.example.Cache", " java.util.HashMap", "1$Node[]"],
+ "stacks": [0, 0, 1, 24, 2, 32, 3, 40, 2, 16],
+ "samples": {"time": [0, 0, 0, 0], "stack": [1, 2, 3, 4],
+             "thread": [0, 0, 0, 0], "operation": [-1, -1, -1, -1], "kind": [0, 0, 0, 0],
+             "weight": [24, 48, 4096, 1048576], "objects": [1, 1, 1, 16]},
+ "threads": [[1, 0]],
+ "operations": {"name": [], "start": [], "duration": [], "thread": [], "detail": [], "status": [],
+                "failed": [], "error": [], "async": [], "bytesIn": [], "bytesOut": []}}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/pcdv/flamepack/schema/flamepack-5.schema.json",
+  "title": "Flamepack, version 5",
+  "description": "The shape of a Flamepack document. The rules a schema cannot state (front coding, depths, equal column lengths, indexes in range, sorted samples) are in SPEC.md, and tools/validate.mjs checks them. An absent member or column reads as its default.",
+  "type": "object",
+  "required": ["version", "unit", "strings", "stacks", "samples"],
+  "properties": {
+    "version": {"const": 5},
+    "minor": {"type": "integer", "minimum": 0, "default": 0},
+    "unit": {"enum": ["ms", "bytes", "count"]},
+    "weights": {"type": "array", "items": {"type": "number"}, "minItems": 1, "default": [1]},
+    "start": {"type": "string", "description": "ISO-8601 instant, or \"\" when the profile has no wall-clock time", "default": ""},
+    "end": {"type": "number", "description": "ns since start, 0 when unknown", "default": 0},
+    "strings": {
+      "type": "array",
+      "description": "front-coded: the first character's code point minus 32 is the length of the prefix shared with the previous string",
+      "items": {"type": "string", "pattern": "^[\\u0020-\\u007f]"}
+    },
+    "stacks": {
+      "type": "object",
+      "description": "the nodes of the stack tree, depth first",
+      "required": ["depth", "name"],
+      "properties": {
+        "depth": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "name": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "type": {"type": "array", "items": {"type": "integer", "minimum": 0, "maximum": 5}, "description": "all 0 when absent"}
+      }
+    },
+    "samples": {
+      "type": "object",
+      "required": ["stack"],
+      "properties": {
+        "stack": {"$ref": "#/$defs/integers", "description": "the node plus 1, 0 for none, each the difference with the previous sample's"},
+        "time": {"$ref": "#/$defs/numbers", "description": "ms, each the difference with the previous sample's; all 0 when absent"},
+        "thread": {"type": "array", "items": {"type": "integer", "minimum": 0}, "description": "all 0 when absent"},
+        "operation": {"$ref": "#/$defs/indexes", "description": "all -1 when absent"},
+        "kind": {"type": "array", "items": {"type": "integer", "minimum": 0}, "description": "an index in weights; all 0 when absent"},
+        "weight": {"$ref": "#/$defs/numbers"},
+        "objects": {"$ref": "#/$defs/numbers"}
+      }
+    },
+    "threads": {
+      "type": "array",
+      "description": "one thread with no name and id 0 when absent",
+      "items": {
+        "type": "array",
+        "prefixItems": [{"type": "integer", "minimum": -1}, {"type": "integer"}],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "operations": {
+      "type": "object",
+      "required": ["name", "start", "duration"],
+      "properties": {
+        "name": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "start": {"$ref": "#/$defs/numbers", "description": "ns, each the difference with the previous operation's"},
+        "duration": {"type": "array", "items": {"type": "number", "minimum": 0}},
+        "thread": {"$ref": "#/$defs/indexes", "description": "an index in threads; all -1 when absent"},
+        "detail": {"$ref": "#/$defs/indexes"},
+        "error": {"$ref": "#/$defs/indexes"},
+        "failed": {"$ref": "#/$defs/flags"},
+        "async": {"$ref": "#/$defs/flags"},
+        "status": {"type": "array", "items": {"type": "integer"}},
+        "bytesIn": {"$ref": "#/$defs/numbers"},
+        "bytesOut": {"$ref": "#/$defs/numbers"}
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "producer": {"type": "string"},
+        "title": {"type": "string"},
+        "description": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "numbers": {"type": "array", "items": {"type": "number"}},
+    "integers": {"type": "array", "items": {"type": "integer"}},
+    "indexes": {"type": "array", "items": {"type": "integer", "minimum": -1}},
+    "flags": {"type": "array", "items": {"enum": [0, 1]}}
+  }
+}
