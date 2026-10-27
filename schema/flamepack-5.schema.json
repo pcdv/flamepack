@@ -72,7 +72,8 @@
       "properties": {
         "producer": {"type": "string"},
         "title": {"type": "string"},
-        "description": {"type": "string"}
+        "description": {"type": "string"},
+        "kind": {"type": "string"}
       }
     }
   },

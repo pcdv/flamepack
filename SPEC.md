@@ -50,7 +50,7 @@ The key words MUST, MUST NOT, SHOULD and MAY are used as in RFC 2119.
   `Content-Encoding: gzip`.
 - To help browsing many files, a tool SHOULD name the ones it writes
   `name-date-kind.fpk`: what was profiled, the date as `20261027` or `20261027T1432`
-  so that names sort by time, and the kind of profile (`wall`, `alloc`, `heap`).
+  so that names sort by time, and the kind of profile, `meta.kind`.
   This is a convention for people; no reader depends on it.
 - All indexes count from 0. Where an index may be absent, it is -1.
 - Integers MUST stay within ±2^53, so that JavaScript reads them exactly.
@@ -248,6 +248,7 @@ What a viewer can show about the profile, all optional strings:
 | `producer` | the program that wrote the document, and its version: `jheap 0.4.0` |
 | `title` | a short name for the profile: `checkout service, 60 s of CPU` |
 | `description` | what was profiled, and how |
+| `kind` | the kind of profile, for file names and lists: `wall`, `cpu`, `alloc`, `heap` or `count`; a producer MAY use another word |
 
 A producer MAY add other members to `meta`, prefixed with its own name (`jfr-web.settings`).
 

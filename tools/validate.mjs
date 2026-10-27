@@ -87,7 +87,7 @@ export function validate(doc) {
     if (!doc.meta || typeof doc.meta !== 'object' || Array.isArray(doc.meta))
       fail('meta is not an object');
     else
-      for (const m of ['producer', 'title', 'description'])
+      for (const m of ['producer', 'title', 'description', 'kind'])
         if (m in doc.meta && typeof doc.meta[m] !== 'string')
           fail(`meta.${m} is not a string`);
   }
