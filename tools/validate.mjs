@@ -4,7 +4,7 @@
  * Checks Flamepack documents, of version 5 (SPEC.md) or 4 (SPEC-4.md), and prints
  * them as collapsed stacks to see what a viewer will draw. No dependency.
  *
- *   node tools/validate.mjs [--collapsed] <file.flamepack.json[.gz]>...
+ *   node tools/validate.mjs [--collapsed] <file.fpk[.gz]>...
  *
  * Exits with 1 when a document breaks a rule of the spec.
  */
@@ -302,6 +302,15 @@ export function collapsed({strings, parent, name, stack, weight}) {
 
 /**
  * @param {string} file
+ * @returns {boolean} whether it starts with the gzip magic bytes
+ */
+function isGzip(file) {
+  const bytes = readFileSync(file);
+  return bytes[0] === 0x1f && bytes[1] === 0x8b;
+}
+
+/**
+ * @param {string} file
  * @returns {any} the document in it, gzipped or not
  */
 export function readDocument(file) {
@@ -316,7 +325,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const print = args.includes('--collapsed');
   const files = args.filter(a => a !== '--collapsed');
   if (!files.length) {
-    console.error('usage: node tools/validate.mjs [--collapsed] <file.flamepack.json[.gz]>...');
+    console.error('usage: node tools/validate.mjs [--collapsed] <file.fpk[.gz]>...');
     process.exit(2);
   }
   let ok = true;
@@ -337,7 +346,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       v.errors.forEach(e => console.log(`  ${e}`));
     }
     else {
-      console.log(`${file}: valid, version ${doc.version}, ${v.stack.length} samples, ${v.parent.length} nodes, ` +
+      console.log(`${file}: valid, ${isGzip(file) ? 'gzip' : 'plain'}, version ${doc.version}, ${v.stack.length} samples, ${v.parent.length} nodes, ` +
                   `${v.strings.length} strings`);
       if (print)
         collapsed(v).forEach(l => console.log(`  ${l}`));

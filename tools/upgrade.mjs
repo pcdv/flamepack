@@ -4,7 +4,7 @@
  * Converts a Flamepack document of version 4 to version 5, leaving out what holds
  * its default. No dependency.
  *
- *   node tools/upgrade.mjs <in.flamepack.json[.gz]> <out.flamepack.json[.gz]>
+ *   node tools/upgrade.mjs <in.fpk[.gz]> <out.fpk[.gz]>
  *
  * The output is gzipped when its name ends in .gz.
  */
@@ -123,7 +123,7 @@ export function upgrade(doc) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [input, output] = process.argv.slice(2);
   if (!input || !output) {
-    console.error('usage: node tools/upgrade.mjs <in.flamepack.json[.gz]> <out.flamepack.json[.gz]>');
+    console.error('usage: node tools/upgrade.mjs <in.fpk[.gz]> <out.fpk[.gz]>');
     process.exit(2);
   }
   const doc = readDocument(input);

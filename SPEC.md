@@ -42,10 +42,16 @@ The key words MUST, MUST NOT, SHOULD and MAY are used as in RFC 2119.
 ## File
 
 - A document is a single JSON object (RFC 8259), encoded in UTF-8.
-- The file name SHOULD end in `.flamepack.json`, or `.flamepack.json.gz` when it is
-  gzipped. Readers SHOULD detect gzip from its first two bytes (`1f 8b`) rather than
-  from the name. Served over HTTP, it is `application/json`, possibly with
+- The file name SHOULD end in `.fpk`, or `.fpk.gz` when it is gzipped. Readers SHOULD
+  also accept `.flamepack.json` and `.flamepack.json.gz`, the names of version 4, and
+  SHOULD detect gzip from its first two bytes (`1f 8b`) rather than from the name.
+  A writer SHOULD write plain text unless asked to compress, so that the file opens in
+  any editor. Served over HTTP, it is `application/json`, possibly with
   `Content-Encoding: gzip`.
+- To help browsing many files, a tool SHOULD name the ones it writes
+  `name-date-kind.fpk`: what was profiled, the date as `20261027` or `20261027T1432`
+  so that names sort by time, and the kind of profile (`wall`, `alloc`, `heap`).
+  This is a convention for people; no reader depends on it.
 - All indexes count from 0. Where an index may be absent, it is -1.
 - Integers MUST stay within ±2^53, so that JavaScript reads them exactly.
 - Several columns are written as **differences**: each value is the difference with
@@ -245,6 +251,21 @@ What a viewer can show about the profile, all optional strings:
 
 A producer MAY add other members to `meta`, prefixed with its own name (`jfr-web.settings`).
 
+### Data of a tool
+
+Any tool MAY store what it likes in a document, to get it back when the file is opened
+again, or by whoever it is shared with: mountain-graph can save its view settings, so
+that the same landscape shows.
+
+- It goes in one top-level member named after the tool (`heap` for jheap), or in
+  `meta`, as above. A tool never writes in another's member.
+- It is not part of the profile: validators ignore it, and a reader that does not know
+  it drops it.
+- A tool that rewrites a document SHOULD keep the members it does not know, or the data
+  of the others is lost.
+- It SHOULD stay small beside the profile, and a tool SHOULD say what it stores: a file
+  that is shared carries it, and paths or host names in it go with the file.
+
 ## Kinds of profiles
 
 | Profile | `unit` | Samples |
@@ -268,7 +289,7 @@ weigh the same), one sample per distinct stack:
  "samples": {"stack": [1, 1, 1], "weight": [3, 12, 5]}}
 ```
 
-[examples/minimal.flamepack.json](examples/minimal.flamepack.json) is such a document.
+[examples/minimal.fpk](examples/minimal.fpk) is such a document.
 
 ## Extensions and versions
 

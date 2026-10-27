@@ -12,7 +12,7 @@ main 3                      "stacks": {"depth": [0, 1, 1], "name": [0, 1, 2]},
                             "samples": {"stack": [1, 1, 1], "weight": [3, 12, 5]}}
 ```
 
-Files end in `.flamepack.json`, or `.flamepack.json.gz` when gzipped.
+Files end in `.fpk`, or `.fpk.gz` when gzipped (`.flamepack.json` is the name of version 4).
 
 - [SPEC.md](SPEC.md): the format, version 5 (draft). [SPEC-4.md](SPEC-4.md): version 4, which
   jfr-web's server still writes, and every tool below reads.

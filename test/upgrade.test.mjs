@@ -19,7 +19,7 @@ function draw(doc) {
 }
 
 for (const name of EXAMPLES) {
-  const v4 = readDocument(`examples/v4/${name}.flamepack.json`);
+  const v4 = readDocument(`examples/v4/${name}.fpk`);
 
   test(`${name}: upgraded, the same stacks`, () => {
     const v5 = upgrade(v4);
@@ -30,25 +30,25 @@ for (const name of EXAMPLES) {
   // the version 5 minimal example is the spec's, a count profile of its own
   if (name !== 'minimal')
     test(`${name}: the version 5 example, the same stacks`, () => {
-      assert.deepEqual(draw(readDocument(`examples/${name}.flamepack.json`)), draw(v4));
+      assert.deepEqual(draw(readDocument(`examples/${name}.fpk`)), draw(v4));
     });
 }
 
 test('an operation keeps its thread, as an index in threads', () => {
-  const v5 = upgrade(readDocument('examples/v4/server.flamepack.json'));
+  const v5 = upgrade(readDocument('examples/v4/server.fpk'));
   const names = validate(v5).strings;
   assert.deepEqual(v5.operations.thread.map((/** @type {number} */ t) => names[v5.threads[t][0]]),
                    ['worker-1', 'worker-2']);
 });
 
 test('samples with no time are sorted by stack, the differences then small', () => {
-  const v5 = upgrade(readDocument('examples/v4/heap.flamepack.json'));
+  const v5 = upgrade(readDocument('examples/v4/heap.fpk'));
   assert.ok(!('time' in v5.samples));
   assert.ok(v5.samples.stack.slice(1).every((/** @type {number} */ d) => d >= 0));
 });
 
 test('version 4 rules still hold for version 4', () => {
-  const v4 = readDocument('examples/v4/minimal.flamepack.json');
+  const v4 = readDocument('examples/v4/minimal.fpk');
   const {threads, ...without} = v4;
   assert.equal(validate(without).errors[0], 'threads is missing');
 });

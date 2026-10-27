@@ -5,6 +5,6 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "test": "node tools/validate.mjs examples/minimal.flamepack.json examples/server.flamepack.json examples/heap.flamepack.json examples/v4/minimal.flamepack.json examples/v4/server.flamepack.json examples/v4/heap.flamepack.json && node --test"
+    "test": "node tools/validate.mjs examples/minimal.fpk examples/server.fpk examples/heap.fpk examples/v4/minimal.fpk examples/v4/server.fpk examples/v4/heap.fpk && node --test"
   }
 }
