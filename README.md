@@ -23,6 +23,10 @@ Files end in `.fpk`, or `.fpk.gz` when gzipped (`.flamepack.json` is the name of
   spec, with no dependency: `node tools/validate.mjs [--collapsed] <file>...`.
 - [tools/upgrade.mjs](tools/upgrade.mjs): converts a version 4 document to version 5:
   `node tools/upgrade.mjs <in> <out>`.
+- [tools/cpuprofile.mjs](tools/cpuprofile.mjs): converts a V8 `.cpuprofile` (Node's `--cpu-prof`,
+  Chrome DevTools, VS Code) to version 5, leaving the idle samples out:
+  `node tools/cpuprofile.mjs [--keep-idle] [--thread <name>] <in> [<out>]`; the output is named
+  `name-date-cpu.fpk` after the input when not given.
 - `npm test` checks the examples, and that converting them changes nothing they draw.
 
 ## Who reads and writes it

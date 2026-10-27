@@ -37,7 +37,7 @@ The key words MUST, MUST NOT, SHOULD and MAY are used as in RFC 2119.
 | [jfr-web](https://github.com/pcdv/jfr-web) | reads (`profile/profile.js`) | writes (`ProfileWriter.java`), reads |
 | [jheap](https://github.com/pcdv/jheap) | reads (`profile/document.rs`) | writes, reads |
 | [mountain-graph](https://github.com/pcdv/mountain-graph) | reads (`load.js`), also version 3 | writes (`profile/heap.js`), reads |
-| this repository | `tools/validate.mjs` checks | `tools/validate.mjs` checks, `tools/upgrade.mjs` writes from version 4 |
+| this repository | `tools/validate.mjs` checks | `tools/validate.mjs` checks, `tools/upgrade.mjs` writes from version 4, `tools/cpuprofile.mjs` from a V8 `.cpuprofile` |
 
 ## File
 
