@@ -1,8 +1,8 @@
 # Flamepack, version 5
 
-Status: draft. jheap and mountain-graph write it for a heap, and jfr-web, jheap and
-mountain-graph read it; jfr-web's server still writes [version 4](SPEC-4.md), which they
-read too. [tools/upgrade.mjs](tools/upgrade.mjs) converts a version 4 document to version 5;
+Status: draft. jfr-web, jheap and mountain-graph write it and read it; they read
+[version 4](SPEC-4.md) too, which no tool writes any more.
+[tools/upgrade.mjs](tools/upgrade.mjs) converts a version 4 document to version 5;
 [Differences from version 4](#differences-from-version-4) lists what a reader of both must
 know.
 
@@ -34,9 +34,9 @@ The key words MUST, MUST NOT, SHOULD and MAY are used as in RFC 2119.
 
 | Project | Version 4 | Version 5 |
 |---|---|---|
-| [jfr-web](https://github.com/pcdv/jfr-web) | writes (`ProfileWriter.java`), reads (`profile/profile.js`) | |
-| [jheap](https://github.com/pcdv/jheap) | writes and reads (`profile/document.rs`) | |
-| [mountain-graph](https://github.com/pcdv/mountain-graph) | writes (`profile/heap.js`), reads (`load.js`), also version 3 | |
+| [jfr-web](https://github.com/pcdv/jfr-web) | reads (`profile/profile.js`) | writes (`ProfileWriter.java`), reads |
+| [jheap](https://github.com/pcdv/jheap) | reads (`profile/document.rs`) | writes, reads |
+| [mountain-graph](https://github.com/pcdv/mountain-graph) | reads (`load.js`), also version 3 | writes (`profile/heap.js`), reads |
 | this repository | `tools/validate.mjs` checks | `tools/validate.mjs` checks, `tools/upgrade.mjs` writes from version 4 |
 
 ## File
